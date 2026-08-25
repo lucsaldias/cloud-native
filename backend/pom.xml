@@ -9,10 +9,10 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>cl.duoc</groupId>
-	<artifactId>pedidos360-backend</artifactId>
+	<artifactId>cloud-backend</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>pedidos360-backend</name>
-	<description>Backend de Pedidos360</description>
+	<name>cloud-backend</name>
+	<description>Backend de cloud-backend</description>
 	<url/>
 	<licenses>
 		<license/>
