@@ -12,15 +12,17 @@ public class Recurso {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Integer idRecurso;
     public String nombreRecurso;
+    public String nombreCreador;
     public String descRecurso;
     public String categRecurso;
     public String rutaArchivo;
 
-    public Recurso(String categRecurso, String descRecurso, Integer idRecurso, String nombreRecurso, String rutaArchivo) {
+    public Recurso(String categRecurso, String descRecurso, Integer idRecurso, String nombreRecurso, String nombreCreador, String rutaArchivo) {
         this.categRecurso = categRecurso;
         this.descRecurso = descRecurso;
         this.idRecurso = idRecurso;
         this.nombreRecurso = nombreRecurso;
+        this.nombreCreador = nombreCreador;
         this.rutaArchivo = rutaArchivo;
     }
 
@@ -41,6 +43,14 @@ public class Recurso {
 
     public void setNombreRecurso(String nombreRecurso) {
         this.nombreRecurso = nombreRecurso;
+    }
+
+    public String getNombreCreador(){
+        return nombreCreador;
+    }
+
+    public void setNombreCreador(String nombreCreador) {
+        this.nombreCreador = nombreCreador;
     }
 
     public String getDescRecurso() {

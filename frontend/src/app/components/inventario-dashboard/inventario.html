@@ -1,0 +1,109 @@
+<div class="dashboard-container">
+  <header class="dashboard-header">
+    <div class="brand">
+      <span class="logo-icon">🎮</span>
+      <div>
+        <h1>AssetMania</h1>
+        <p>Catálogo de Assets de Videojuegos</p>
+      </div>
+    </div>
+
+    <div class="user-profile">
+      <div class="avatar-container">
+        <img src="https://i.pinimg.com/736x/f5/10/c5/f510c5f2aa49d06724e6f8229793b09a.jpg" alt="Avatar" class="avatar-img" />
+        <span class="status-indicator"></span>
+      </div>
+      <div class="user-info">
+        <span class="user-name">Developer</span>
+        <span class="user-role">Creador Pro</span>
+      </div>
+      <button class="btn-logout" routerLink="/login">Cerrar Sesión</button>
+    </div>
+  </header>
+
+  <section class="toolbar-section">
+    <div class="search-box">
+      <span class="search-icon">🔍</span>
+      <input 
+        type="text" 
+        placeholder="Buscar por nombre, creador o descripción..." 
+        [ngModel]="busqueda()" 
+        (ngModelChange)="busqueda.set($event)"
+      />
+    </div>
+
+    <button class="btn-add-asset">
+      <span>+</span> Nuevo recurso
+    </button>
+  </section>
+
+  <nav class="categories-nav">
+    @for (cat of categorias; track cat) {
+      <button 
+        class="cat-tab" 
+        [class.active]="categoriaSeleccionada() === cat"
+        (click)="seleccionarCategoria(cat)"
+      >
+        {{ cat }}
+      </button>
+    }
+  </nav>
+
+  <div class="main-layout">
+    <main class="assets-grid">
+      @for (recurso of recursosFiltrados(); track recurso.idRecurso) {
+        <article class="asset-card">
+          <div class="asset-thumb">
+            <img [src]="recurso.rutaArchivo" [alt]="recurso.nombreRecurso" />
+            <span class="badge-category">{{ recurso.categRecurso }}</span>
+          </div>
+
+          <div class="asset-body">
+            <h4>{{ recurso.nombreRecurso }}</h4>
+            <span class="asset-author">👤 {{ recurso.nombreCreador }}</span>
+            <p class="asset-desc">{{ recurso.descRecurso }}</p>
+          </div>
+
+          <div class="asset-actions">
+            <button class="btn-icon">✏️ Editar</button>
+            <button class="btn-icon danger">🗑️ Eliminar</button>
+          </div>
+        </article>
+      } @empty {
+        <div class="empty-state">
+          <span class="empty-icon">👾</span>
+          <h3>No hay recursos aquí</h3>
+        </div>
+      }
+    </main>
+
+    <aside class="community-sidebar">
+      <div class="sidebar-card">
+        <h3>👥 Tus Comunidades</h3>
+        <ul class="community-list">
+          <li class="community-item">
+            <span class="community-icon">🔮</span>
+            <div>
+              <strong>Unreal Engine Chile</strong>
+              <small>1.2k Miembros</small>
+            </div>
+          </li>
+          <li class="community-item">
+            <span class="community-icon">⚡</span>
+            <div>
+              <strong>Unity Indie Developers</strong>
+              <small>3.4k Miembros</small>
+            </div>
+          </li>
+          <li class="community-item">
+            <span class="community-icon">🎨</span>
+            <div>
+              <strong>Pixel Art & 3D Creators</strong>
+              <small>890 Miembros</small>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </aside>
+  </div>
+</div>

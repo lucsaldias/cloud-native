@@ -1,0 +1,109 @@
+<div class="register-wrapper">
+  <div class="register-card">
+    <div class="brand-header">
+      <div class="brand-logo">🎮</div>
+      <h2>Bienvenido a AssetMania</h2>
+      <p class="brand-subtitle">Crea tu cuenta para explorar y subir recursos 3D, texturas, VFX y mas.</p>
+    </div>
+
+    @if (errorMensaje()) {
+      <div class="error-banner">
+        <span class="error-icon">⚠️</span>
+        <span>{{ errorMensaje() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="registrarForm" (ngSubmit)="onSubmit()" class="register-form">
+      <!-- Nombre y Apellido -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="nombre">Nombre</label>
+          <input
+            id="nombre"
+            type="text"
+            formControlName="nombre"
+            placeholder="Ej: Jorge"
+            [class.invalid]="registrarForm.get('nombre')?.touched && registrarForm.get('nombre')?.invalid"
+          />
+          @if (registrarForm.get('nombre')?.touched && registrarForm.get('nombre')?.invalid) {
+            <span class="error-text">El nombre es obligatorio, no te podemos llamar jorgito si te llamas pedro.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="apellido">Apellido</label>
+          <input
+            id="apellido"
+            type="text"
+            formControlName="apellido"
+            placeholder="Ej: Midos"
+            [class.invalid]="registrarForm.get('apellido')?.touched && registrarForm.get('apellido')?.invalid"
+          />
+          @if (registrarForm.get('apellido')?.touched && registrarForm.get('apellido')?.invalid) {
+            <span class="error-text">El apellido es obligatorio.</span>
+          }
+        </div>
+      </div>
+
+      <!-- Correo Electronico -->
+      <div class="form-group">
+        <label for="correo">Correo Electrónico</label>
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          placeholder="correo@ejemplo.com"
+          [class.invalid]="registrarForm.get('correo')?.touched && registrarForm.get('correo')?.invalid"
+        />
+        @if (registrarForm.get('correo')?.touched && registrarForm.get('correo')?.invalid) {
+          <span class="error-text">Ingresa un correo valido, ese esta raro.</span>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-row">
+        <div class="form-group">
+          <label for="contrasena">Contraseña</label>
+          <input
+            id="contrasena"
+            type="password"
+            formControlName="contrasena"
+            placeholder="••••••••"
+            [class.invalid]="registrarForm.get('contrasena')?.touched && registrarForm.get('contrasena')?.invalid"
+          />
+          @if (registrarForm.get('contrasena')?.touched && registrarForm.get('contrasena')?.invalid) {
+            <span class="error-text">Mínimo 6 caracteres, manin.</span>
+          }
+        </div>
+
+        <div class="form-group">
+          <label for="confirmarContrasena">Confirmar Contraseña</label>
+          <input
+            id="confirmarContrasena"
+            type="password"
+            formControlName="confirmarContrasena"
+            placeholder="******"
+            [class.invalid]="registrarForm.get('confirmarContrasena')?.touched && registrarForm.hasError('contrasenaMisMatch')"
+          />
+          @if (registrarForm.get('confirmarContrasena')?.touched && registrarForm.hasError('contrasenaMisMatch')) {
+            <span class="error-text">Las contraseñas no coinciden.</span>
+          }
+        </div>
+      </div>
+
+      <!-- Boton -->
+      <button type="submit" class="btn-primary" [disabled]="isCargando()">
+        @if (isCargando()) {
+          <span class="spinner"></span>
+          <span>Creando cuenta...</span>
+        } @else {
+          <span>Registrarse en la plataforma</span>
+        }
+      </button>
+    </form>
+
+    <div class="card-footer">
+      <p>¿Ya tienes una cuenta creada? <a routerLink="/login">Inicia sesión aquí.</a></p>
+    </div>
+  </div>
+</div>

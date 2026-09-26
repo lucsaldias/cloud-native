@@ -1,0 +1,62 @@
+<div class="login-wrapper">
+  <div class="login-card">
+    <div class="brand-header">
+      <div class="brand-logo">👾</div>
+      <h2>Bienvenido a AssetMania</h2>
+      <p class="brand-subtitle">Ingresa tus datos nuevamente para acceder al catalogo.</p>
+    </div>
+
+    @if (errorMensaje()) {
+      <div class="error-banner">
+        <span class="error-icon">⚠️</span>
+        <span>{{ errorMensaje() }}</span>
+      </div>
+    }
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+      <!-- Correo -->
+      <div class="form-group">
+        <label for="correo">Correo Electronico</label>
+        <input
+          id="correo"
+          type="email"
+          formControlName="correo"
+          placeholder="correo@ejemplo"
+          [class.invalid]="loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid"
+        />
+        @if (loginForm.get('correo')?.touched && loginForm.get('correo')?.invalid) {
+          <span class="error-text">Ingresa un correo valido.</span>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="form-group">
+        <label for="contrasena">Contraseña</label>
+        <input
+          id="contrasena"
+          type="password"
+          formControlName="contrasena"
+          placeholder="******"
+          [class.invalid]="loginForm.get('contrasena')?.touched && loginForm.get('contrasena')?.invalid"
+        />
+        @if (loginForm.get('contrasena')?.touched && loginForm.get('contrasena')?.invalid) {
+          <span class="error-text">La contraseña es requerida.</span>
+        }
+      </div>
+
+      <!-- Botón de Inicio de Sesión -->
+      <button type="submit" class="btn-primary" [disabled]="isCargando()">
+        @if (isCargando()) {
+          <span class="spinner"></span>
+          <span>Iniciando sesion...</span>
+        } @else {
+          <span>Iniciar Sesion</span>
+        }
+      </button>
+    </form>
+
+    <div class="card-footer">
+      <p>¿Aun no tienes cuenta? <a routerLink="/register">Registrate aqui, vro.</a></p>
+    </div>
+  </div>
+</div>

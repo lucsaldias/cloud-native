@@ -1,1 +1,61 @@
-/* You can add global styles to this file, and also import other style files */
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@400;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+:root {
+  --neon-cyan: #00ffcc;
+  --neon-blue: #00a2ff;
+  --neon-pink: #ff0055;
+  --cyber-bg: #030712;
+}
+
+body {
+  font-family: 'Chakra Petch', sans-serif;
+  background-color: var(--cyber-bg);
+  color: #f1f5f9;
+  margin: 0;
+  overflow-x: hidden;
+}
+
+/* Tipografía de código/técnica para IDs, tamaños y etiquetas */
+code, pre, .font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Personalización de la Barra de Desplazamiento (Scrollbar Futurista) */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+  border-left: 1px solid #1e293b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0891b2;
+  border-radius: 2px;
+  box-shadow: 0 0 8px rgba(0, 255, 204, 0.4);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-cyan);
+}
+
+/* Overlay de líneas de escaneo (Efecto Pantalla CRT/HUD) */
+.scanline-overlay {
+  position: relative;
+}
+
+.scanline-overlay::before {
+  content: "";
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.25) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 10;
+  pointer-events: none;
+  opacity: 0.6;
+}
