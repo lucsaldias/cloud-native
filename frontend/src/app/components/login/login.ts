@@ -1,54 +1,55 @@
-import { Component, inject, signal } from "@angular/core";
-import { FormBuilder, FormGroup, ReactiveFormsModule, Validators  } from "@angular/forms";
+import { Component, inject, signal, OnInit, OnDestroy } from "@angular/core";
 import { RouterLink, Router } from "@angular/router";
-import { HttpErrorResponse } from "@angular/common/http";
-import { AuthService } from "../../services/auth.service";
+import { MsalService, MsalBroadcastService } from "@azure/msal-angular";
+import { InteractionStatus } from "@azure/msal-browser";
+import { filter, Subject, takeUntil } from "rxjs";
+import { loginRequest } from "../../auth-config"; 
 
 @Component ({
     selector: 'login',
     standalone: true,
-    imports: [ReactiveFormsModule, RouterLink],
+    imports: [RouterLink],
     templateUrl: './login.html',
     styleUrl: './login.css'
 })
-
-export class Login {
-    private fb = inject(FormBuilder);
-    private auth = inject(AuthService);
+export class Login implements OnInit, OnDestroy {
+    private msalService = inject(MsalService);
+    private msalBroadcastService = inject(MsalBroadcastService);
     private router = inject(Router);
+    private destroy$ = new Subject<void>();
     
     errorMensaje = signal<string | null>(null);
     isCargando = signal<boolean>(false);
 
-    loginForm: FormGroup = this.fb.group({
-        correo: ['', [Validators.required, Validators.email]],
-        contrasena: ['', [Validators.required]]
-    });
+    ngOnInit(): void {
+        this.msalBroadcastService.inProgress$
+            .pipe(
+                filter((status: InteractionStatus) => status === InteractionStatus.None),
+                takeUntil(this.destroy$)
+            )
+            .subscribe(() => {
+                this.isCargando.set(false);
+                const cuentas = this.msalService.instance.getAllAccounts();
+                
+                if (cuentas.length > 0) {
+                    this.msalService.instance.setActiveAccount(cuentas[0]);
+                    this.router.navigate(['/inventario-dashboard']);
+                }
+            });
+    }
+
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
+    }
 
     onSubmit(): void {
-        if (this.loginForm.invalid) {
-            this.loginForm.markAllAsTouched();
-            return;
-        }
-
         this.isCargando.set(true);
         this.errorMensaje.set(null);
-
-        const { correo, contrasena } = this.loginForm.value;
-
-        this.auth.login({ correo: correo!, contrasena: contrasena! }).subscribe({
-            next: (res) => {
-                this.isCargando.set(false);
-                if (res?.token) {
-                    localStorage.setItem('token', res.token);
-                }
-                this.router.navigate(['/inventario-dashboard']);
-            },
-            error: (err: HttpErrorResponse) => {
-                this.isCargando.set(false);
-                const errorBody = err.error as { message?: string } | null;
-                this.errorMensaje.set(errorBody?.message || 'Correo o contraseña incorrectos, revisadlo.')
-            }
-        })
+        
+        this.msalService.loginRedirect({
+            ...loginRequest,
+            redirectUri: 'http://localhost:4200/login'
+        });
     }
-} 
+}

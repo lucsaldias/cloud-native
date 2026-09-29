@@ -1,62 +1,55 @@
-import { Component, inject, signal } from '@angular/core';
-import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, ValidationErrors, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
-import { AuthService } from '../../services/auth.service';
-import { HttpErrorResponse } from '@angular/common/http';
+import { Component, inject, signal, OnInit, OnDestroy } from "@angular/core";
+import { RouterLink, Router } from "@angular/router";
+import { MsalService, MsalBroadcastService } from "@azure/msal-angular";
+import { InteractionStatus } from "@azure/msal-browser";
+import { filter, Subject, takeUntil } from "rxjs";
+import { loginRequest } from "../../auth-config"; 
 
 @Component ({
     selector: 'registrar',
     standalone: true,
-    imports: [RouterLink, ReactiveFormsModule],
+    imports: [RouterLink],
     templateUrl: './register.html',
     styleUrl: './register.css'
 })
-
-export class Registro {
-    private fb = inject(FormBuilder);
-    private auth = inject(AuthService);
+export class Registro implements OnInit, OnDestroy {
+    private msalService = inject(MsalService);
+    private msalBroadcastService = inject(MsalBroadcastService);
     private router = inject(Router);
-
+    private destroy$ = new Subject<void>();
+    
     errorMensaje = signal<string | null>(null);
     isCargando = signal<boolean>(false);
 
-    registrarForm: FormGroup = this.fb.group({
-        nombre: ['', Validators.required],
-        apellido: ['', Validators.required],
-        correo: ['', [Validators.required, Validators.email]],
-        contrasena: ['', [Validators.required, Validators.minLength(6)]],
-        confirmarContrasena: ['', Validators.required]
-    }, {
-        validators: this.contrasenaMatchValidator
-    });
+    ngOnInit(): void {
+        this.msalBroadcastService.inProgress$
+            .pipe(
+                filter((status: InteractionStatus) => status === InteractionStatus.None),
+                takeUntil(this.destroy$)
+            )
+            .subscribe(() => {
+                this.isCargando.set(false);
+                const cuentas = this.msalService.instance.getAllAccounts();
+                
+                if (cuentas.length > 0) {
+                    this.msalService.instance.setActiveAccount(cuentas[0]);
+                    this.router.navigate(['/inventario-dashboard']);
+                }
+            });
+    }
 
-    private contrasenaMatchValidator(control: AbstractControl): ValidationErrors | null {
-        const contrasena = control.get('contrasena')?.value;
-        const confirmarContrasena = control.get('confirmarContrasena')?.value;
-        return contrasena === confirmarContrasena ? null : { contrasenaMisMatch: true};
+    ngOnDestroy(): void {
+        this.destroy$.next();
+        this.destroy$.complete();
     }
 
     onSubmit(): void {
-        if (this.registrarForm.invalid) {
-            this.registrarForm.markAllAsTouched();
-            return;
-        }
-
         this.isCargando.set(true);
         this.errorMensaje.set(null);
-
-        const { nombre, apellido, correo, contrasena } = this.registrarForm.value;
-
-        this.auth.registrar({ nombre: nombre!, apellido: apellido!, correo: correo!, contrasena: contrasena!}).subscribe({
-            next: () => {
-                this.isCargando.set(false);
-                this.router.navigate(['/inventario-dashboard']);
-            },
-           error: (err: HttpErrorResponse) => {
-            this.isCargando.set(false);
-            const errorBody = err.error as {message?: string} | null;
-            this.errorMensaje.set(errorBody?.message || 'Hubo un error en crear tu cuenta :(');
-           }
+        
+        this.msalService.loginRedirect({
+            ...loginRequest,
+            redirectUri: 'http://localhost:4200/register'
         });
     }
 }
