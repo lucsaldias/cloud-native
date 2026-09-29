@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject } from '@angular/core';
+import { Router, RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -8,4 +8,11 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.html',
   styleUrl: './home.css'
 })
-export class HomeComponent {}
+export class HomeComponent {
+  private router = inject(Router);
+
+  entrarComoInvitado(){
+    localStorage.setItem('currentUser', 'Invitado');
+    this.router.navigate(['/inventario-dashboard']);
+  }
+}

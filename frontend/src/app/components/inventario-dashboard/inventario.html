@@ -15,9 +15,17 @@
       </div>
       <div class="user-info">
         <span class="user-name">Developer</span>
-        <span class="user-role">Creador Pro</span>
       </div>
       <button class="btn-logout" routerLink="/login">Cerrar Sesión</button>
+      @if (!esInvitado()) {
+        <div class="user-profile" routerLink="/perfil" style="cursor: pointer;">
+          👤 Mi Perfil
+        </div>
+      } @else {
+      <button routerLink="/login" class="btn-login-header">
+        <span>🔑 Iniciar Sesión</span>
+      </button>
+      }
     </div>
   </header>
 
@@ -60,13 +68,14 @@
 
           <div class="asset-body">
             <h4>{{ recurso.nombreRecurso }}</h4>
-            <span class="asset-author">👤 {{ recurso.nombreCreador }}</span>
+            <span class="asset-author" [routerLink]="['/perfil-usuario', recurso.nombreCreador]" style="cursor: pointer;">
+              👤 {{ recurso.nombreCreador }}
+            </span>
             <p class="asset-desc">{{ recurso.descRecurso }}</p>
-          </div>
 
-          <div class="asset-actions">
-            <button class="btn-icon">✏️ Editar</button>
-            <button class="btn-icon danger">🗑️ Eliminar</button>
+            <div class="card-footer-downloads">
+              <span class="downloads-badge">⬇️ {{ recurso.descargas || 0 }} descargas</span>
+            </div>
           </div>
         </article>
       } @empty {

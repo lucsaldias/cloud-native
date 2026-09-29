@@ -1,0 +1,84 @@
+<div class="perfil-contenedor">
+    <header class="perfil-top-bar">
+        <button routerLink="/inventario-dashboard" class="btn-back">
+            ⬅️ Volver al Catalogo.
+        </button>
+    </header>
+
+    <section class="perfilCard">
+        <div class="perfil-header-bg"></div>
+        <div class="perfil-detalles">
+            <div class="avatar-wrapper">
+                <img 
+                [src]="'https://api.dicebear.com/7.x/bottts/svg?seed=' + perfilUsuario()"
+                alt="avatar"
+                class="perfil-avatar"
+            />
+        </div>
+
+        <div class="user-meta">
+            <div class="titulo-row">
+                <h2>{{ perfilUsuario() }}</h2>
+                @if (isPerfilPropio()) {
+                    <span class="badge-own">Tu perfil.</span>
+                }
+            </div>
+            <p class="usuario-handle">&#64;{{ perfilUsuario().toLowerCase() }}</p>
+            <p class="usuario-bio">Creador de Contenido 3D y assets.</p>
+
+            <div class="stats-row">
+                <div class="stat-item">
+                    <span class="stat-value">{{ userAssets().length }}</span>
+                    <span class="stat-label">Assets Subidos.</span>
+            </div>
+            <div class="stat-item">
+                <span class="stat-value">{{ totalDescargasFormateado() }}</span>
+                <span class="stat-label">Descargas totales.</span>
+            </div>
+        </div>
+    </div>
+</div>
+</section>
+
+<section class="assets-actualizados">
+    <h3>
+        @if (isPerfilPropio()) {
+            Mis Assets Subidos.
+        } @else {
+            Assets por {{ perfilUsuario() }}
+        }
+    </h3>
+
+    <div class="asset-grid">
+        @for (asset of userAssets(); track asset.idRecurso) {
+            <article class="asset-card">
+                <div class="asset-thumb">
+                    <img [src]="asset.rutaArchivo" [alt]="asset.nombreRecurso" />
+                    <span class="badge-categoria">{{ asset.categRecurso }}</span>
+                </div>
+
+                <div class="asset-body">
+                    <h4>{{ asset.nombreRecurso }}</h4>
+                    <p class="asset-desc">{{ asset.descRecurso }}</p>
+                </div>
+
+                <div class="asset-footer">
+                    <span class="asset-descargas">⬇️ {{ asset.descargas || 0 }} descargas.</span>
+                </div>
+
+                @if (isPerfilPropio()) {
+                    <div class="asset-actions">
+                        <button class="btn-icon">✏️ Editar</button>
+                        <button class="btn-icon danger">🗑️ Eliminar</button>
+                    </div>
+                }
+            </article>
+        } @empty {
+            <div class="empty-state">
+                <span class="empty-icon">👾</span>
+                <p>Este usuario no ha subido recursos aun.</p>
+            </div>
+        }
+    </div>
+</section>
+</div>

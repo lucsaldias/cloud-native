@@ -153,6 +153,29 @@
   font-size: 0.85rem;
 }
 
+.btn-login-header {
+  background: rgba(102, 252, 241, 0.1);
+  color: #66fcf1;
+  border: 1px solid #66fcf1;
+  padding: 0.55rem 1.1rem;
+  border-radius: 8px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: all 0.25 ease;
+  box-shadow: 0 0 10px rgba(102, 252, 241, 0.1);
+}
+
+.btn-login-header:hover {
+  background: #66fcf1;
+  color: #0b0c10;
+  box-shadow: 0 0 15px rgba(102, 252, 241, 0.4);
+  transform: translateY(-1px);
+}
+
 .cat-tab.active {
   background: #6366f1;
   color: #fff;
@@ -205,6 +228,21 @@
   border-radius: 4px;
 }
 
+.card-footer-downloads {
+  margin-top: 0.6rem;
+  padding-top: 0.4rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.downloads-badge {
+  font-size: 0.75rem;
+  color: #66fcf1;
+  font-weight: 500;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+
 .asset-body {
   padding: 0.85rem;
   flex: 1;
@@ -233,11 +271,6 @@
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-}
-
-.asset-actions {
-  display: flex;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .btn-icon {

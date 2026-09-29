@@ -1,0 +1,257 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #0b0c10;
+  color: #c5c6c7;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+}
+
+.perfil-contenedor {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+.perfil-top-bar {
+  margin-bottom: 1.5rem;
+}
+
+.btn-back {
+  background: rgba(31, 40, 51, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #66fcf1;
+  padding: 0.6rem 1.2rem;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.btn-back:hover {
+  background: rgba(102, 252, 241, 0.15);
+  transform: translateX(-3px);
+}
+
+/* Card Principal del Perfil */
+.perfilCard {
+  background: rgba(31, 40, 51, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-bottom: 2rem;
+}
+
+.perfil-header-bg {
+  height: 140px;
+  background: linear-gradient(135deg, #1f2833 0%, #6366f1 50%, #66fcf1 100%);
+  opacity: 0.8;
+}
+
+.perfil-detalles {
+  padding: 0 2rem 2rem 2rem;
+  position: relative;
+  display: flex;
+  gap: 1.5rem;
+}
+
+.asset-footer {
+  margin-top: 0.8rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.asset-desc {
+  flex: 1;
+}
+
+.asset-downloads {
+  font-size: 0.78rem;
+  color: #66fcf1;
+  font-weight: 500;
+}
+
+.avatar-wrapper {
+  margin-top: -50px;
+}
+
+.perfil-avatar {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #0b0c10;
+  border: 4px solid #0b0c10;
+}
+
+.user-meta {
+  flex: 1;
+  padding-top: 0.75rem;
+}
+
+.titulo-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.titulo-row h2 {
+  margin: 0;
+  font-size: 1.6rem;
+  color: #ffffff;
+}
+
+.badge-own {
+  background: rgba(102, 252, 241, 0.15);
+  border: 1px solid #66fcf1;
+  color: #66fcf1;
+  font-size: 0.72rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+}
+
+.usuario-handle {
+  margin: 0.2rem 0 0.5rem 0;
+  color: #8892b0;
+  font-size: 0.9rem;
+}
+
+.usuario-bio {
+  margin: 0 0 1.2rem 0;
+  color: #c5c6c7;
+  font-size: 0.95rem;
+}
+
+.stats-row {
+  display: flex;
+  gap: 2rem;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-value {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #66fcf1;
+}
+
+.stat-label {
+  font-size: 0.78rem;
+  color: #8892b0;
+}
+
+/* Sección de Assets del Usuario */
+.assets-actualizados h3 {
+  color: #fff;
+  font-size: 1.2rem;
+  margin-bottom: 1.2rem;
+}
+
+.asset-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+
+.asset-card {
+  background: rgba(31, 40, 51, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.asset-thumb {
+  position: relative;
+  height: 140px;
+  width: 100%;
+  background: #111;
+}
+
+.asset-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.badge-categoria {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  background: rgba(11, 12, 16, 0.85);
+  color: #66fcf1;
+  font-size: 0.7rem;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+}
+
+.asset-body {
+  padding: 0.85rem;
+  flex: 1;
+}
+
+.asset-body h4 {
+  margin: 0 0 0.3rem 0;
+  color: #fff;
+  font-size: 0.95rem;
+}
+
+.asset-desc {
+  font-size: 0.8rem;
+  color: #8892b0;
+  margin: 0;
+  line-height: 1.3;
+  display: -webkit-box;
+  line-clamp: 2;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.asset-actions {
+  display: flex;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.btn-icon {
+  flex: 1;
+  background: transparent;
+  border: none;
+  color: #c5c6c7;
+  padding: 0.5rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.btn-icon:hover {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.btn-icon.danger {
+  color: #fca5a5;
+}
+
+.btn-icon.danger:hover {
+  background: rgba(239, 68, 68, 0.15);
+}
+
+.empty-state {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem;
+  background: rgba(31, 40, 51, 0.3);
+  border-radius: 12px;
+  color: #8892b0;
+}
+
+.empty-icon {
+  font-size: 2.5rem;
+  display: block;
+  margin-bottom: 0.5rem;
+}

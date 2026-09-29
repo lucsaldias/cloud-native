@@ -1,37 +1,35 @@
-import { Component, signal, computed } from "@angular/core";
+import { Component, OnInit, signal, computed, inject } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
+import { ActivatedRoute, RouterLink, Router } from "@angular/router";
 
 export interface Recurso {
-    idRecurso?: number;
+    idRecurso: number;
     nombreRecurso: string;
-    nombreCreador: string;
     descRecurso: string;
     categRecurso: string;
-    rutaArchivo:  string,
-    descargas?: number;
+    rutaArchivo: string;
+    nombreCreador: string;
+    descargas: number;
 }
 
 @Component({
-    selector: 'inventario-dashboard',
+    selector: 'perfil-usuario',
     standalone: true,
-    imports: [CommonModule, FormsModule, RouterLink],
-    templateUrl: './inventario.html',
-    styleUrl: './inventario.css',
+    imports: [CommonModule, RouterLink],
+    templateUrl: './perfil.html',
+    styleUrl: './perfil.css'
 })
 
-export class InventarioDashboard {
-    busqueda = signal<string>('');
-    categoriaSeleccionada = signal<string>('Todos');
+export class Perfil implements OnInit {
+    private route = inject(ActivatedRoute);
+    private router = inject(Router);
 
-    seleccionarCategoria(categoria: string): void {
-        this.categoriaSeleccionada.set(categoria);
-    }
+    usuarioLogeado = signal<string>(localStorage.getItem('currentUser') || 'Invitado');
 
-    categorias = ['Todos', 'Modelo 3D', 'Textura', 'VFX', 'Scripts', 'Audio'];
+    perfilUsuario = signal<string>('');
+    isPerfilPropio = computed(() => this.perfilUsuario().toLowerCase() === this.usuarioLogeado().toLowerCase());
 
-    recursos = signal<Recurso[]>([
+    recursosGlobales = signal<Recurso[]>([
        {
             idRecurso: 1,
             nombreRecurso: 'Star Wars Blaster Sound',
@@ -86,23 +84,38 @@ export class InventarioDashboard {
             rutaArchivo: 'https://img.magnific.com/vector-gratis/efectos-comicos-nubes-fuego-humo-explosion-bomba-hechizo-magico-explosion-juego-2d-elementos-vfx-explosion-llama-azul-humo-aislado-ilustracion-dibujos-animados-vector-fondo_107791-22504.jpg?semt=ais_hybrid&w=740&q=80',
             descargas: 890        
         }
-    ]);
+    ])
 
-    recursosFiltrados = computed(() => {
-        const query = this.busqueda().toLowerCase();
-        const cat = this.categoriaSeleccionada();
+    userAssets = computed(() => 
+    this.recursosGlobales().filter(
+        r => r.nombreCreador.toLowerCase() === this.perfilUsuario().toLowerCase()
+    )
+   );
 
-        return this.recursos().filter(recurso => {
-            const coincideCat = cat === 'Todos' || recurso.categRecurso === cat;
-            const coincideTexto = 
-                recurso.nombreRecurso.toLowerCase().includes(query) ||
-                recurso.nombreCreador.toLowerCase().includes(query) ||
-                recurso.descRecurso.toLowerCase().includes(query);
+   totalDescargas = computed(() =>
+    this.userAssets().reduce((acumulado, asset) => acumulado + asset.descargas, 0)
+   );
 
-            return coincideCat && coincideTexto;
+   totalDescargasFormateado = computed(() => {
+    const total = this.totalDescargas();
+    if (total >= 1000) {
+      return (total / 1000).toFixed(1) + 'k';
+    }
+    return total.toString();
+  });
+
+    ngOnInit(): void {
+        this.route.params.subscribe(params => {
+            const username = params['username'];
+            if (username) {
+                this.perfilUsuario.set(username);
+            } else {
+                if (this.usuarioLogeado() === 'Invitado') {
+                    this.router.navigate(['/inventario-dashboard']);
+                } else {
+                    this.perfilUsuario.set(this.usuarioLogeado());
+                }
+            }
         });
-    });
-
-    usuarioActual = signal<string>(localStorage.getItem('currentUser') || 'Invitado');
-    esInvitado = computed(() => this.usuarioActual() === 'Invitado')
+    }
 }

@@ -16,14 +16,16 @@ public class Recurso {
     public String descRecurso;
     public String categRecurso;
     public String rutaArchivo;
+    public Integer descargas;
 
-    public Recurso(String categRecurso, String descRecurso, Integer idRecurso, String nombreRecurso, String nombreCreador, String rutaArchivo) {
+    public Recurso(String categRecurso, String descRecurso, Integer idRecurso, String nombreRecurso, String nombreCreador, String rutaArchivo, Integer descargas) {
         this.categRecurso = categRecurso;
         this.descRecurso = descRecurso;
         this.idRecurso = idRecurso;
         this.nombreRecurso = nombreRecurso;
         this.nombreCreador = nombreCreador;
         this.rutaArchivo = rutaArchivo;
+        this.descargas = descargas;
     }
 
     public Recurso() {   
@@ -77,5 +79,11 @@ public class Recurso {
         this.rutaArchivo = rutaArchivo;
     }
 
+    public Integer getDescargas() {
+        return descargas;
+    }
 
+    public void setDescargas(Integer descargas) {
+        this.descargas = descargas;
+    }
 }
