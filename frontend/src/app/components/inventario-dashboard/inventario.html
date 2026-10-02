@@ -68,9 +68,19 @@
 
           <div class="asset-body">
             <h4>{{ recurso.nombreRecurso }}</h4>
-            <span class="asset-author" [routerLink]="['/perfil-usuario', recurso.nombreCreador]" style="cursor: pointer;">
-              👤 {{ recurso.nombreCreador }}
-            </span>
+            <div class="creador-row">
+              <span class="creador-link" [routerLink]="['/perfil-usuario', recurso.nombreCreador]">
+                👤 {{ recurso.nombreCreador }}
+              </span>
+
+              <button
+                class="btn-seguir-sm"
+                [class.siguiendo]="estaSiguiendo(recurso.nombreCreador)"
+                (click)="seguirCreadorDirecto(recurso.nombreCreador, $event)">
+                {{ estaSiguiendo(recurso.nombreCreador) ? '✔ Siguiendo' : '+ Seguir' }}
+              </button>
+            </div>
+
             <p class="asset-desc">{{ recurso.descRecurso }}</p>
 
             <div class="card-footer-downloads">

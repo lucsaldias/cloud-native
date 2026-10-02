@@ -144,11 +144,41 @@
   color: #8892b0;
 }
 
-/* Sección de Assets del Usuario */
 .assets-actualizados h3 {
   color: #fff;
   font-size: 1.2rem;
   margin-bottom: 1.2rem;
+}
+
+.btn-seguir {
+  background: rgba(102, 252, 241, 0.15);
+  border: 1px solid #66fcf1;
+  color: #66fcf1;
+  font-size: 0.8rem;
+  font-weight: 600;
+  padding: 0.35rem 0.9rem;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  margin-left: 0.5rem;
+}
+
+.btn-seguir:hover {
+  background: #66fcf1;
+  color: #0b0c10;
+  transform: translateY(-1px);
+}
+
+.btn-seguir.siguiendo {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.2);
+  color: #c5c6c7;
+}
+
+.btn-seguir.siguiendo:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #fca5a5;
 }
 
 .asset-grid {

@@ -261,6 +261,63 @@
   margin-bottom: 0.4rem;
 }
 
+.creador-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0.4rem 0 0.6rem 0;
+  gap: 0.5rem;
+}
+
+.creador-link {
+  font-size: 0.82rem;
+  color: #8892b0;
+  cursor: pointer;
+  font-weight: 500;
+  transition: color 0.2s ease;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.creador-link:hover {
+  color: #66fcf1;
+  text-decoration: underline;
+}
+
+.btn-seguir-sm {
+  background: rgba(102, 252, 241, 0.1);
+  border: 1px solid rgba(102, 252, 241, 0.4);
+  color: #66fcf1;
+  font-size: 0.72rem;
+  font-weight: 600;
+  padding: 0.25rem 0.65rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-seguir-sm:hover {
+  background: #66fcf1;
+  color: #0b0c10;
+  box-shadow: 0 0 8px rgba(102, 252, 241, 0.3);
+  transform: translateY(-1px);
+}
+
+.btn-seguir-sm.siguiendo {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #a0aec0;
+}
+
+.btn-seguir-sm.siguiendo:hover {
+  background: rgba(239, 68, 68, 0.15);
+  border-color: rgba(239, 68, 68, 0.4);
+  color: #fca5a5;
+  box-shadow: none;
+}
+
 .asset-desc {
   font-size: 0.8rem;
   color: #8892b0;

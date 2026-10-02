@@ -1,7 +1,8 @@
 import { Component, signal, computed } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
-import { RouterLink } from "@angular/router";
+import { RouterLink, Router } from "@angular/router";
+
 
 export interface Recurso {
     idRecurso?: number;
@@ -25,8 +26,37 @@ export class InventarioDashboard {
     busqueda = signal<string>('');
     categoriaSeleccionada = signal<string>('Todos');
 
+    constructor(private router: Router) {}
+
     seleccionarCategoria(categoria: string): void {
         this.categoriaSeleccionada.set(categoria);
+    }
+
+    siguiendoLista = signal<string[]>(['yorch']);
+
+    estaSiguiendo(nombreCreador: string): boolean {
+        return this.siguiendoLista().includes(nombreCreador.toLowerCase());
+    }
+
+    seguirCreadorDirecto(nombreCreador: string, event: Event) {
+        event.stopPropagation();
+
+        const usuarioActual = localStorage.getItem('currentUser') || 'Invitado';
+        if (usuarioActual === 'Invitado') {
+            alert('Debes iniciar sesion para seguir a un creador.');
+            this.router.navigate(['/login']);
+            return;
+        }
+
+        const creador = nombreCreador.toLowerCase();
+
+        if (this.siguiendoLista().includes(creador)) {
+            this.siguiendoLista.update(lista => lista.filter(c => c !== creador));
+        } else {
+            this.siguiendoLista.update(lista => [...lista, creador]);
+        }
+
+        console.log(`Siguiendo al creador: ${nombreCreador}`);
     }
 
     categorias = ['Todos', 'Modelo 3D', 'Textura', 'VFX', 'Scripts', 'Audio'];

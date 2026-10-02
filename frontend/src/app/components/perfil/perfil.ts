@@ -26,8 +26,12 @@ export class Perfil implements OnInit {
 
     usuarioLogeado = signal<string>(localStorage.getItem('currentUser') || 'Invitado');
 
+    siguiendoLista = signal<string[]>(['yorch']);
+
     perfilUsuario = signal<string>('');
     isPerfilPropio = computed(() => this.perfilUsuario().toLowerCase() === this.usuarioLogeado().toLowerCase());
+
+    estaSiguiendo = computed(() => this.siguiendoLista().includes(this.perfilUsuario().toLowerCase()));
 
     recursosGlobales = signal<Recurso[]>([
        {
@@ -118,4 +122,21 @@ export class Perfil implements OnInit {
             }
         });
     }
+
+    toggleSeguir() {
+        if (this.usuarioLogeado() === 'Invitado') {
+            alert('Necesitas iniciar sesion para seguir a este usuario.');
+            this.router.navigate(['/login']);
+            return;
+        }
+
+        const creador = this.perfilUsuario().toLowerCase();
+
+        if (this.estaSiguiendo()) {
+
+        this.siguiendoLista.update(lista => lista.filter(u => u !== creador));
+    } else {
+        this.siguiendoLista.update(lista => [...lista, creador]);
+    }
+   }
 }

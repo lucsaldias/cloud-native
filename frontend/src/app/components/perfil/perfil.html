@@ -19,8 +19,16 @@
         <div class="user-meta">
             <div class="titulo-row">
                 <h2>{{ perfilUsuario() }}</h2>
+
                 @if (isPerfilPropio()) {
                     <span class="badge-own">Tu perfil.</span>
+                } @else {
+                    <button 
+                        class="btn-seguir"
+                        [class.siguiendo]="estaSiguiendo()"
+                        (click)="toggleSeguir()">
+                        {{ estaSiguiendo() ? '- Dejar de Seguir' : '+ Seguir'}}
+                    </button>
                 }
             </div>
             <p class="usuario-handle">&#64;{{ perfilUsuario().toLowerCase() }}</p>
