@@ -1,5 +1,7 @@
 package cl.duoc.cloud.entity;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,7 +20,15 @@ public class Recurso {
     public String rutaArchivo;
     public Integer descargas;
 
-    public Recurso(String categRecurso, String descRecurso, Integer idRecurso, String nombreRecurso, String nombreCreador, String rutaArchivo, Integer descargas) {
+    public Recurso(
+        @JsonProperty String categRecurso, 
+        @JsonProperty String descRecurso, 
+        @JsonProperty Integer idRecurso, 
+        @JsonProperty String nombreRecurso, 
+        @JsonProperty String nombreCreador, 
+        @JsonProperty String rutaArchivo, 
+        @JsonProperty Integer descargas
+    ) {
         this.categRecurso = categRecurso;
         this.descRecurso = descRecurso;
         this.idRecurso = idRecurso;

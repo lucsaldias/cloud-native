@@ -37,6 +37,8 @@ public class RecursoService {
             recursoExistente.setDescRecurso(recursoActualizado.getDescRecurso());
             recursoExistente.setCategRecurso(recursoActualizado.getCategRecurso());
             recursoExistente.setRutaArchivo(recursoActualizado.getRutaArchivo());
+            recursoExistente.setNombreCreador(recursoActualizado.getNombreCreador());
+            recursoExistente.setDescargas(recursoActualizado.getDescargas());
 
             return recursoRepository.save(recursoExistente);
         });
