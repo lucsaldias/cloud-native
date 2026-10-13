@@ -15,15 +15,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import cl.duoc.cloud.entity.Recurso;
+import cl.duoc.cloud.service.AssetEventPublisher;
 import cl.duoc.cloud.service.RecursoService;
 
 @CrossOrigin(origins="http://localhost:4200")
 @RestController
-@RequestMapping("/recursos")
+@RequestMapping("/api/recursos")
 public class RecursoController {
 
     @Autowired
     private RecursoService recursoService;
+
+    @Autowired
+    private AssetEventPublisher eventPublisher;
 
     @GetMapping
     public List<Recurso> obtenerRecursos() {
@@ -32,7 +36,9 @@ public class RecursoController {
 
     @PostMapping
     public Recurso guardarRecurso(@RequestBody Recurso rec) {
-        return recursoService.guardarRecurso(rec);
+        Recurso nuevoRecurso = recursoService.guardarRecurso(rec);
+        eventPublisher.publicarEventoAsset("NUEVO_ASSET_CREADO: " + nuevoRecurso.getNombreRecurso());
+        return nuevoRecurso;
     }
 
     @GetMapping("/{id}")
@@ -45,13 +51,17 @@ public class RecursoController {
     @PutMapping("/{id}")
     public ResponseEntity<Recurso> actualizarRecurso(@PathVariable("id") Integer id, @RequestBody Recurso rec) {
         return recursoService.actualizarRecurso(id, rec)
-            .map(recursoActualizado -> ResponseEntity.ok(recursoActualizado))
+            .map(recursoActualizado -> {
+                eventPublisher.publicarEventoAsset("ASSET_ACTUALIZADO_ID: " + id);
+                return ResponseEntity.ok(recursoActualizado);
+            })
             .orElseGet(() -> ResponseEntity.<Recurso>notFound().build());
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminarRecursoPorId(@PathVariable("id") Integer id) {
         if (recursoService.eliminarRecursoPorId(id)) {
+            eventPublisher.publicarEventoAsset("ASSET_ELIMINADO_ID: " + id);
             return ResponseEntity.ok().build();
         } else {
             return ResponseEntity.notFound().build();
