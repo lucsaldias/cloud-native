@@ -2,7 +2,7 @@ import { Component, signal, computed, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink, Router } from "@angular/router";
-
+import Swal from "sweetalert2";
 
 export interface Recurso {
     idRecurso?: number;
@@ -33,8 +33,39 @@ export class InventarioDashboard implements OnInit {
     }
 
     crearNuevoRecurso(): void {
-        if (this.esInvitado()) {
-            alert('Necesitas iniciar sesion o registrarte para publicar un nuevo recurso.');
+        if(this.esInvitado()) {
+            Swal.fire({
+                title: '¡Inicia Sesion o Registrate!',
+                text: 'Para crear un nuevo recurso, necesitas iniciar sesion o registrarte.',
+                imageUrl: 'https://i.pinimg.com/474x/f3/e0/9b/f3e09b5a5f7e73c23e3a91fbb1a03451.jpg',
+                imageWidth: 120,
+                imageHeight: 120,
+                imageAlt: 'Icono',
+                showCancelButton: true,
+                confirmButtonColor: '#00d62a',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: '🔑 Iniciar Sesion',
+                cancelButtonText: 'Cancelar',
+                background: '#151f28',
+                color: '#ffffff',
+
+                didOpen: (popup) => {
+                    popup.style.border = '2px solid #ffffff';
+                    popup.style.borderRadius = '16px';
+                    popup.style.boxShadow = '0 0 20px rgba(0, 210, 106, 0.25)';
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.router.navigate(['/login']);
+                }
+            });
+            return;
+        }
+
+        const usuarioActual = localStorage.getItem('currentUser') || 'Invitado';
+        if (usuarioActual === 'Invitado') {
+            alert('Debes iniciar sesion para seguir a un creador.');
+            this.router.navigate(['/login']);
             return;
         }
 
@@ -65,6 +96,35 @@ export class InventarioDashboard implements OnInit {
 
     seguirCreadorDirecto(nombreCreador: string, event: Event) {
         event.stopPropagation();
+
+        if(this.esInvitado()) {
+            Swal.fire({
+                title: '¡Inicia Sesion o Registrate!',
+                text: `Para poder seguir a ${nombreCreador} y estar al tanto de sus publicaciones, necesitaras iniciar sesion o registrarte`,
+                imageUrl: 'https://i.pinimg.com/474x/f3/e0/9b/f3e09b5a5f7e73c23e3a91fbb1a03451.jpg',
+                imageWidth: 120,
+                imageHeight: 120,
+                imageAlt: 'Icono',
+                showCancelButton: true,
+                confirmButtonColor: '#00d62a',
+                cancelButtonColor: '#ef4444',
+                confirmButtonText: '🔑 Iniciar Sesion',
+                cancelButtonText: 'Cancelar',
+                background: '#151f28',
+                color: '#ffffff',
+
+                didOpen: (popup) => {
+                    popup.style.border = '2px solid #ffffff';
+                    popup.style.borderRadius = '16px';
+                    popup.style.boxShadow = '0 0 20px rgba(0, 210, 106, 0.25)';
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    this.router.navigate(['/login']);
+                }
+            });
+            return;
+        }
 
         const usuarioActual = localStorage.getItem('currentUser') || 'Invitado';
         if (usuarioActual === 'Invitado') {
