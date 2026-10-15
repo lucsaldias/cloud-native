@@ -1,4 +1,4 @@
-import { Component, signal, computed } from "@angular/core";
+import { Component, signal, computed, OnInit } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { FormsModule } from "@angular/forms";
 import { RouterLink, Router } from "@angular/router";
@@ -22,7 +22,7 @@ export interface Recurso {
     styleUrl: './inventario.css',
 })
 
-export class InventarioDashboard {
+export class InventarioDashboard implements OnInit {
     busqueda = signal<string>('');
     categoriaSeleccionada = signal<string>('Todos');
 
@@ -32,9 +32,34 @@ export class InventarioDashboard {
         this.categoriaSeleccionada.set(categoria);
     }
 
+    crearNuevoRecurso(): void {
+        if (this.esInvitado()) {
+            alert('Necesitas iniciar sesion o registrarte para publicar un nuevo recurso.');
+            return;
+        }
+
+        console.log('Abrir formulario de creacion de recursos');
+    }
+
     siguiendoLista = signal<string[]>(['yorch']);
 
+    comunidades = [
+        {nombre: 'Unreal Engine Chile', miembros: '1.2k Miembros', icono: '🔮'},
+        {nombre: 'Unity Indie Developers', miembros: '3.4k Miembros', icono: '⚡'},
+        {nombre: 'Pixel & 3D LATAM', miembros: '42k Miembors', icono: '🎨'}
+    ]
+
+    obtenerTotalComunidades(): number {
+        if(this.esInvitado()) {
+            return 0;
+        }
+        return this.comunidades.length;
+    }
+
     estaSiguiendo(nombreCreador: string): boolean {
+        if (this.esInvitado()) {
+            return false;
+        }
         return this.siguiendoLista().includes(nombreCreador.toLowerCase());
     }
 
@@ -115,6 +140,24 @@ export class InventarioDashboard {
             categRecurso: 'VFX',
             rutaArchivo: 'https://img.magnific.com/vector-gratis/efectos-comicos-nubes-fuego-humo-explosion-bomba-hechizo-magico-explosion-juego-2d-elementos-vfx-explosion-llama-azul-humo-aislado-ilustracion-dibujos-animados-vector-fondo_107791-22504.jpg?semt=ais_hybrid&w=740&q=80',
             descargas: 890        
+        },
+        {
+            idRecurso: 7,
+            nombreRecurso: 'aerodinamica de una empanada',
+            nombreCreador: 'arr',
+            descRecurso: 'empanadas',
+            categRecurso: 'Scripts',
+            rutaArchivo: 'https://i.redd.it/t2yvanfk0m161.jpg',
+            descargas: 12003
+        },
+        {
+            idRecurso: 8,
+            nombreRecurso: 'Corona 3D',
+            nombreCreador: 'darthvader',
+            descRecurso: 'modelo de corona en 3d, para que te sientas que pudiste conquistar polonia.',
+            categRecurso: 'Modelo 3D',
+            rutaArchivo: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSwfzn7SlQWnmZHzlpmyG2FCVFdErK3cDcCd1oR4KA10eY02IwsgmELWic&s=10',
+            descargas: 400000
         }
     ]);
 
@@ -135,4 +178,30 @@ export class InventarioDashboard {
 
     usuarioActual = signal<string>(localStorage.getItem('currentUser') || 'Invitado');
     esInvitado = computed(() => this.usuarioActual() === 'Invitado')
+
+    isInvitado: boolean = true;
+    nombreUsuario: string = 'Invitado';
+
+    ngOnInit(): void {
+        this.verificarEstadoSesion();
+    }
+    
+    verificarEstadoSesion(): void {
+        const usuarioLogueado = localStorage.getItem('user')
+
+        if (usuarioLogueado) {
+            const usuario = JSON.parse(usuarioLogueado);
+            this.isInvitado = false;
+            this.nombreUsuario = usuario.nombre || usuario.nombreusuario || 'Developer';
+        } else {
+            this.isInvitado = true;
+            this.nombreUsuario = 'Invitado';
+        }
+    }
+
+    cerrarSesion(): void{
+        localStorage.removeItem('user');
+        this.isInvitado = true;
+        this.nombreUsuario = 'Invitado';
+    }
 }

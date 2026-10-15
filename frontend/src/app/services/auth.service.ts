@@ -3,6 +3,7 @@ import { HttpClient } from "@angular/common/http";
 import { Observable } from "rxjs";
 import { Login } from "../components/login/login";
 
+
 export interface RegistroPayLoad {
     nombre: string;
     apellido: string;

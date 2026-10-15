@@ -13,17 +13,21 @@
         <img src="https://i.pinimg.com/736x/f5/10/c5/f510c5f2aa49d06724e6f8229793b09a.jpg" alt="Avatar" class="avatar-img" />
         <span class="status-indicator"></span>
       </div>
+
       <div class="user-info">
-        <span class="user-name">Developer</span>
+        <span class="user-name">
+          {{ esInvitado() ? 'Invitado' : (nombreUsuario || 'Developer') }}
+        </span>
       </div>
-      <button class="btn-logout" routerLink="/login">Cerrar Sesión</button>
+
       @if (!esInvitado()) {
         <div class="user-profile" routerLink="/perfil" style="cursor: pointer;">
+        <button class="btn-logout" (click)="cerrarSesion()" routerLink="/login">Cerrar Sesion</button>
           👤 Mi Perfil
         </div>
       } @else {
       <button routerLink="/login" class="btn-login-header">
-        <span>🔑 Iniciar Sesión</span>
+        <span>🔑 Iniciar Sesion</span>
       </button>
       }
     </div>
@@ -34,13 +38,13 @@
       <span class="search-icon">🔍</span>
       <input 
         type="text" 
-        placeholder="Buscar por nombre, creador o descripción..." 
+        placeholder="Buscar por nombre, creador o descripcion..." 
         [ngModel]="busqueda()" 
         (ngModelChange)="busqueda.set($event)"
       />
     </div>
 
-    <button class="btn-add-asset">
+    <button class="btn-add-asset" (click)="crearNuevoRecurso()">
       <span>+</span> Nuevo recurso
     </button>
   </section>
@@ -91,38 +95,50 @@
       } @empty {
         <div class="empty-state">
           <span class="empty-icon">👾</span>
-          <h3>No hay recursos aquí</h3>
+          <h3>No hay recursos aqui</h3>
         </div>
       }
     </main>
 
-    <aside class="community-sidebar">
-      <div class="sidebar-card">
+  <aside class="community-sidebar">
+    <div class="sidebar-card">
+      <div class="sidebar-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
         <h3>👥 Tus Comunidades</h3>
-        <ul class="community-list">
-          <li class="community-item">
-            <span class="community-icon">🔮</span>
-            <div>
-              <strong>Unreal Engine Chile</strong>
-              <small>1.2k Miembros</small>
-            </div>
-          </li>
-          <li class="community-item">
-            <span class="community-icon">⚡</span>
-            <div>
-              <strong>Unity Indie Developers</strong>
-              <small>3.4k Miembros</small>
-            </div>
-          </li>
-          <li class="community-item">
-            <span class="community-icon">🎨</span>
-            <div>
-              <strong>Pixel Art & 3D Creators</strong>
-              <small>890 Miembros</small>
-            </div>
-          </li>
-        </ul>
+        <span class="community-contador-badge" style="background: rgba(255, 255, 255, 0.1); padding: 2px 8px; border-radius: 12px; font-size: 0.85rem; color: #a0aec0;">
+          {{ obtenerTotalComunidades() }}
+        </span>
       </div>
-    </aside>
-  </div>
+
+      @if (!esInvitado()) {
+      <ul class="community-list">
+        <li class="community-item">
+          <span class="community-icon">🔮</span>
+          <div>
+            <strong>Unreal Engine Chile</strong>
+            <small>1.2k Miembros</small>
+          </div>
+        </li>
+        <li class="community-item">
+          <span class="community-icon">⚡</span>
+          <div>
+            <strong>Unity Indie Developers</strong>
+            <small>3.4k Miembros</small>
+          </div>
+        </li>
+        <li class="community-item">
+          <span class="community-icon">🎨</span>
+          <div>
+            <strong>Pixel Art & 3D LATAM</strong>
+            <small>42k Miembros</small>
+          </div>
+        </li>
+      </ul>
+    } @else {
+      <p style="font-size: 0.85rem; color: #718096; margin-top: 0.5rem;">
+        Inicia sesión para unirte a comunidades.
+      </p>
+      }
+    </div>
+  </aside>
+ </div>
 </div>
