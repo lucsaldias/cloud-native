@@ -1,4 +1,4 @@
-# AssetMania - Cloud Native App
+  # AssetMania - Cloud Native App
 
 AssetMania es una plataforma full-stack para la gestión y catalogación de recursos de videojuegos (Modelos 3D, Texturas, VFX, Audio y Scripts). Este proyecto implementa una arquitectura orientada a la nube, integrando seguridad avanzada con Microsoft Entra ID y mensajería asíncrona mediante RabbitMQ.
 
@@ -49,3 +49,5 @@ Este acceso de contingencia evade temporalmente el MsalGuard en el frontend, per
 ## Flujo de RabbitMQ
 
 La integración de mensajería asíncrona se puede observar al interactuar con los recursos del sistema. El RabbitAdminController y los servicios asociados (AssetEventPublisher y AssetEventConsumer) gestionan el envío y recepción de notificaciones desvinculadas del hilo principal de la aplicación[cite: 16].
+
+### Importante: Si algo falla en el back probablamente se necesite instalar y lanzar RabbitMQ, asimismo, si algo falla en el front, probablemente se necesite SweetAlert2
